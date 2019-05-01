@@ -5,14 +5,14 @@ const app = express();
 
 app.use(morgan('dev'));
 
-const apps = require("./playstore")
+const apps = require('./playstore')
 
 app.get('/', (req, res) => {
-  res.send("Welcome to the homepage!")
+  res.send('Welcome to the homepage!')
 })
 
 app.get('/apps', (req, res) => {
-  const {sort, genres = ""} = req.query;
+  const {sort, genres = ''} = req.query;
 
   if (sort) {
     if (!['Rating', 'App'].includes(sort)) {
@@ -25,10 +25,10 @@ app.get('/apps', (req, res) => {
   if (genres) {
     if (!['Action', 'Puzzle', 'Strategy', 'Casual', 'Arcade', 'Card']
       .includes(genres)) {
-        return res
-          .status(400)
-          .send('App genre must be one of the following: Action, Puzzle, Strategy, Casual, Arcade, or Card.')
-      }
+      return res
+        .status(400)
+        .send('App genre must be one of the following: Action, Puzzle, Strategy, Casual, Arcade, or Card.')
+    }
   }
 
   let results = apps
@@ -37,16 +37,16 @@ app.get('/apps', (req, res) => {
         .Genres
         .toLowerCase()
         .includes(genres.toLowerCase())
-      )
+    )
 
-  if (sort === "Rating") {
+  if (sort === 'Rating') {
     results
       .sort((a, b) => {
         return a[sort] < b[sort] ? 1 : a[sort] > b[sort] ? -1 : 0;
       })
   }
 
-  if (sort === "App") {
+  if (sort === 'App') {
     results
       .sort((a, b) => {
         return a[sort] > b[sort] ? 1 : a[sort] < b[sort] ? -1 : 0;
